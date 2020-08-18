@@ -4,8 +4,13 @@ import './App.css';
 import Vote from './Components/Vote.js'
 import User from './Components/User.js'
 import State from './Components/State.js'
+import Signup from './Components/Signup.js'
+import Login from './Components/Login.js'
+import Home from './Components/Home.js'
+import NotFound from './Components/NotFound.js'
 import RepresentativeContainer from './Containers/RepresentativeContainer';
 import SenatorContainer from './Containers/SenatorContainer';
+import {Route, Switch, Link, NavLink} from 'react-router-dom'
 
 //we tried putting the fetches in their respective containers but it the values weren't being passed up to the parent, so we put them back in App
 
@@ -32,9 +37,9 @@ class App extends React.Component {
     .then(json  => this.getReps(json.contests[1]))
   }
   
-  fetchSen = () => {
+  fetchSen = (url) => {
     let key = 'AIzaSyDmZGjlJOFg3tzG7QPoDDcYaGdesndYC3s'
-    fetch(`https://content-civicinfo.googleapis.com/civicinfo/v2/voterinfo?address=%27${this.state.addressURL}%27&electionId=2000&key=${key}`)
+    fetch(`https://content-civicinfo.googleapis.com/civicinfo/v2/voterinfo?address=%27${url}%27&electionId=2000&key=${key}`)
     .then(res => res.json())
     .then(console.log)
     // .then(json  => this.getSens(json.contests[0]))
@@ -77,13 +82,16 @@ class App extends React.Component {
     this.setState({
       addressURL: after
     })
-    this.fetchSen()
+    this.fetchSen(after)
   }
   //originally this was not working because the onSubmit was in the input tag instead of in the form tag
 
   render() {
     return (   
-      <div>
+      <div className="App">
+        <header>
+          <h2>Let's ACTUALLY Make America Great Again!</h2>
+        </header>
         <form onSubmit={(e) => this.addressSubmit(e)} >
             <label>
             Address:
@@ -92,7 +100,12 @@ class App extends React.Component {
             <input type="submit" value="Submit" />
         </form>
         <RepresentativeContainer repsObject={this.state.representatives}/>   
-        <SenatorContainer repsObject={this.state.senators}/>   
+        <SenatorContainer repsObject={this.state.senators}/>  
+        <Route path="/home" component={Home}/>
+        <Route path="/signup" component={Signup}/>
+        <Route path="/login" component={Login}/>
+        <Route path="/home" component={Home}/>
+        <Route path="/profile" component={User}/>
       </div> 
     );
   };
