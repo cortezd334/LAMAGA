@@ -1,16 +1,16 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import Vote from './Components/Vote.js'
-import User from './Components/User.js'
-import State from './Components/State.js'
-import Signup from './Components/Signup.js'
-import Login from './Components/Login.js'
-import Home from './Components/Home.js'
-import NotFound from './Components/NotFound.js'
-import RepresentativeContainer from './Containers/RepresentativeContainer';
-import SenatorContainer from './Containers/SenatorContainer';
-import {Route, Switch, Link, NavLink} from 'react-router-dom'
+import React from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import Vote from "./Components/Vote.js";
+import User from "./Components/User.js";
+import State from "./Components/State.js";
+import Signup from "./Components/Signup.js";
+import Login from "./Components/Login.js";
+import Home from "./Components/Home.js";
+import NotFound from "./Components/NotFound.js";
+import RepresentativeContainer from "./Containers/RepresentativeContainer";
+import SenatorContainer from "./Containers/SenatorContainer";
+import { Route, Switch, Link, NavLink } from "react-router-dom";
 
 //we tried putting the fetches in their respective containers but it the values weren't being passed up to the parent, so we put them back in App
 
@@ -28,14 +28,30 @@ class App extends React.Component {
     },
   };
 
-  fetchReps = () => {
+  fetchReps = (url) => {
     let key = "AIzaSyDmZGjlJOFg3tzG7QPoDDcYaGdesndYC3s";
     fetch(
-      `https://content-civicinfo.googleapis.com/civicinfo/v2/voterinfo?address=%274526%20Mill%20Run%20Rd.%20Dallas%20TX%2075244%27&electionId=2000&key=${key}`
+      `https://content-civicinfo.googleapis.com/civicinfo/v2/voterinfo?address=%27${url}%27&electionId=2000&key=${key}`
     )
       //returns candidates for '2000' election for a specific address
       .then((res) => res.json())
-      .then((json) => this.getReps(json.contests[1]));
+      .then((json) => {
+        json.contests.map((con) => {
+          if (
+            con.office &&
+            con.office.includes("Representative") &&
+            con.level &&
+            con.level[0] == "country"
+          ) {
+            this.setState({
+              representatives: {
+                candidates: con.candidates,
+                office: con.office,
+              },
+            });
+          }
+        });
+      });
   };
 
   fetchSen = (url) => {
@@ -64,47 +80,6 @@ class App extends React.Component {
         });
       });
   };
-
-  //   let yes = [];
-  //   let no = [];
-
-  // for (let i = 0; i < sen.contests.length; i++){
-  // if(sen.contests[i].office.endsWith("Senator") && sen.contests[i][0] == "country")
-  // {yes.push(sen.constests[i])
-  // } elseif (sen.contests[i].office = undefined || sen.contests[i][0] != "country"){
-  //   no.push(sen.contests[i])}
-
-  // return yes
-
-  // sen.contests.map((con) => {
-  // if (con.office.endsWith("Senator") && con.level[0] == "country") {
-  // con.level[0] == "country" ? console.log("yes") : console.log("no");
-  //     this.setState({
-  //       senators: {
-  //         candidates: con.candidates,
-  //         office: con.office,
-  //       },
-  //     });
-  //     console.log(con.office);
-  //   } else {
-  //     console.log("hello");
-  //   }
-
-  // let yes = [];
-  // let no = []
-  // for (let i = 0; i < sen.contests.length; i++){
-  //   if(sen.contests[i].office.endsWith("Senator") && sen.contests[i][0] == "country"){
-  //  yes.push(sen.constests[i])
-  // } elseif (sen.contests[i].office = undefined || sen.contests[i][0] != "country"){
-  // no.push(sen.contests[i])
-  //
-  // return yes
-  //
-  // }
-
-  //Apparently not all the data is formatted the same,for the TX address senators were json.contests[0] and reps. were json.contests[1]---but for my address senators are json.contests[5] and reps. are json.contests[0]
-  //On 1st submit, we get a 400, on 2nd submit it does work (when we .then(console.log)) if we .then(json  => this.getSens(json.contests[0])), then it errors out (same error that fixed itself earlier today) <after messing w/ it for a while it would work on the 4th submit>
-  //componentDidMount did not help w/ fixing this problem
 
   getReps = (reps) => {
     console.log("representatives", reps);
@@ -138,20 +113,20 @@ class App extends React.Component {
     let before = address.split(" ");
     let after = before.join("%20");
     this.setState({
-      addressURL: after
-    })
-    this.fetchSen(after)
-  }
-  //originally this was not working because the onSubmit was in the input tag instead of in the form tag
+      addressURL: after,
+    });
+    this.fetchSen(after);
+    this.fetchReps(after);
+  };
 
   render() {
-    return (   
+    return (
       <div className="App">
         <header>
           <h2>Let's ACTUALLY Make America Great Again!</h2>
         </header>
-        <form onSubmit={(e) => this.addressSubmit(e)} >
-            <label>
+        <form onSubmit={(e) => this.addressSubmit(e)}>
+          <label>
             Address:
             <input
               type="text"
@@ -162,14 +137,14 @@ class App extends React.Component {
           </label>
           <input type="submit" value="Submit" />
         </form>
-        <RepresentativeContainer repsObject={this.state.representatives}/>   
-        <SenatorContainer repsObject={this.state.senators}/>  
-        <Route path="/home" component={Home}/>
-        <Route path="/signup" component={Signup}/>
-        <Route path="/login" component={Login}/>
-        <Route path="/home" component={Home}/>
-        <Route path="/profile" component={User}/>
-      </div> 
+        <RepresentativeContainer repsObject={this.state.representatives} />
+        <SenatorContainer senObject={this.state.senators} />
+        <Route path="/home" component={Home} />
+        <Route path="/signup" component={Signup} />
+        <Route path="/login" component={Login} />
+        <Route path="/home" component={Home} />
+        <Route path="/profile" component={User} />
+      </div>
     );
   }
 }
