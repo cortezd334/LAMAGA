@@ -17,12 +17,3 @@ class SenatorCard extends React.Component {
   }
 }
 export default SenatorCard;
-
-// <div>
-//   <div className="card" onClick={() => props.modify(props.stock)}>
-//     <div className="card-body">
-//       <h5 className="card-title">{props.stock.name}</h5>
-//       <p className="card-text">{props.stock.price}</p>
-//     </div>
-//   </div>
-// </div>;

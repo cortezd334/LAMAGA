@@ -1,16 +1,16 @@
-import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
-import Vote from "./Components/Vote.js";
-import User from "./Components/User.js";
-import State from "./Components/State.js";
-import Signup from "./Components/Signup.js";
-import Login from "./Components/Login.js";
-import Home from "./Components/Home.js";
-import NotFound from "./Components/NotFound.js";
-import RepresentativeContainer from "./Containers/RepresentativeContainer";
-import SenatorContainer from "./Containers/SenatorContainer";
-import { Route, Switch, Link, NavLink } from "react-router-dom";
+import React from 'react';
+import logo from './logo.svg';
+import './App.css';
+import Vote from './Components/Vote.js'
+import User from './Components/User.js'
+import State from './Components/State.js'
+import Signup from './Components/Signup.js'
+import Login from './Components/Login.js'
+import Home from './Components/Home.js'
+import NotFound from './Components/NotFound.js'
+import RepresentativeContainer from './Containers/RepresentativeContainer';
+import SenatorContainer from './Containers/SenatorContainer';
+import {Route, Switch, Link, NavLink, Router} from 'react-router-dom'
 
 //we tried putting the fetches in their respective containers but it the values weren't being passed up to the parent, so we put them back in App
 
@@ -56,29 +56,19 @@ class App extends React.Component {
 
   fetchSen = (url) => {
     let key = "AIzaSyDmZGjlJOFg3tzG7QPoDDcYaGdesndYC3s";
-    fetch(
-      `https://content-civicinfo.googleapis.com/civicinfo/v2/voterinfo?address=%27${url}%27&electionId=2000&key=${key}`
-      // you have to be very specific with the formatting that you input into the text bar
-    )
-      .then((res) => res.json())
-      .then((sen) => {
-        console.log(sen);
-        sen.contests.map((con) => {
-          if (
-            con.office &&
-            con.office.endsWith("Senator") &&
-            con.level &&
-            con.level[0] == "country"
-          ) {
-            this.setState({
-              senators: {
-                candidates: con.candidates,
-                office: con.office,
-              },
-            });
-          }
-        });
-      });
+    fetch(`https://content-civicinfo.googleapis.com/civicinfo/v2/voterinfo?address=%27${url}%27&electionId=2000&key=${key}`)
+    .then(res => res.json())
+    .then(sen => sen.contests.map(con => {
+        if (con.office && con.office.endsWith("Senator") && con.level && con.level[0] == "country") {
+          this.setState({
+            senators: {
+              candidates: con.candidates,
+              office: con.office
+            }
+          });
+        };
+      })
+    );
   };
 
   getReps = (reps) => {
@@ -124,6 +114,20 @@ class App extends React.Component {
       <div className="App">
         <header>
           <h2>Let's ACTUALLY Make America Great Again!</h2>
+          <ul>
+            <li>
+              <NavLink to='/home'>Home</NavLink>
+            </li>
+            <li>
+              <NavLink to='/signup'>Sign Up</NavLink>
+            </li>
+            <li>
+              <NavLink to='/login'>Log In</NavLink>
+            </li>
+            <li>
+              <NavLink to='/profile'>My Profile</NavLink>
+            </li>
+          </ul>
         </header>
         <form onSubmit={(e) => this.addressSubmit(e)}>
           <label>
@@ -137,14 +141,16 @@ class App extends React.Component {
           </label>
           <input type="submit" value="Submit" />
         </form>
-        <RepresentativeContainer repsObject={this.state.representatives} />
-        <SenatorContainer senObject={this.state.senators} />
-        <Route path="/home" component={Home} />
-        <Route path="/signup" component={Signup} />
-        <Route path="/login" component={Login} />
-        <Route path="/home" component={Home} />
-        <Route path="/profile" component={User} />
-      </div>
+        <RepresentativeContainer repsObject={this.state.representatives}/>   
+        <SenatorContainer repsObject={this.state.senators}/>  
+        <Switch>
+        <Route path='/home' component={Home}/>
+        <Route path='/signup' component={Signup}/>
+        <Route path='/login' component={Login}/>
+        <Route path='/profile' component={User}/>
+        <Route component={NotFound}/>
+        </Switch>
+      </div> 
     );
   }
 }

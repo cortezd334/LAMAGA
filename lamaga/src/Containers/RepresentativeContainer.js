@@ -6,21 +6,18 @@ class RepresentativeContainer extends React.Component {
   renderReps = () => {
     let representatives = this.props.repsObject.candidates;
 
-    return representatives.map((sen) => {
+    return representatives.map(rep => {
       return (
-        <RepresentativeCard
-          rep={sen}
-          key={sen.name}
-          name={sen.name}
-          party={sen.party}
-          candidateUrl={sen.candidateUrl}
-        />
+        <RepresentativeCard rep={rep} key={rep.name} name={rep.name} party={rep.party} candidateUrl={rep.candidateUrl}/>
       );
     });
   };
 
   render() {
-    return <div>{this.renderReps()}</div>;
+    return (
+      <div>
+        {this.renderReps()}
+      </div>);
   }
 }
 export default RepresentativeContainer;
