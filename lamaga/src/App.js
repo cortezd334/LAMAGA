@@ -43,21 +43,59 @@ class App extends React.Component {
       .then((sen) => {
         console.log(sen);
         sen.contests.map((con) => {
-          // if (con.office.endsWith("Senator") && con.level[0] == "country") {
-          if (con.level[0] == "country") {
+          if (
+            con.office &&
+            con.office.endsWith("Senator") &&
+            con.level &&
+            con.level[0] == "country"
+          ) {
             this.setState({
               senators: {
                 candidates: con.candidates,
                 office: con.office,
               },
             });
-            console.log(con.office);
-          } else {
-            console.log("hello");
           }
         });
       });
   };
+
+  //   let yes = [];
+  //   let no = [];
+
+  // for (let i = 0; i < sen.contests.length; i++){
+  // if(sen.contests[i].office.endsWith("Senator") && sen.contests[i][0] == "country")
+  // {yes.push(sen.constests[i])
+  // } elseif (sen.contests[i].office = undefined || sen.contests[i][0] != "country"){
+  //   no.push(sen.contests[i])}
+
+  // return yes
+
+  // sen.contests.map((con) => {
+  // if (con.office.endsWith("Senator") && con.level[0] == "country") {
+  // con.level[0] == "country" ? console.log("yes") : console.log("no");
+  //     this.setState({
+  //       senators: {
+  //         candidates: con.candidates,
+  //         office: con.office,
+  //       },
+  //     });
+  //     console.log(con.office);
+  //   } else {
+  //     console.log("hello");
+  //   }
+
+  // let yes = [];
+  // let no = []
+  // for (let i = 0; i < sen.contests.length; i++){
+  //   if(sen.contests[i].office.endsWith("Senator") && sen.contests[i][0] == "country"){
+  //  yes.push(sen.constests[i])
+  // } elseif (sen.contests[i].office = undefined || sen.contests[i][0] != "country"){
+  // no.push(sen.contests[i])
+  //
+  // return yes
+  //
+  // }
 
   //Apparently not all the data is formatted the same,for the TX address senators were json.contests[0] and reps. were json.contests[1]---but for my address senators are json.contests[5] and reps. are json.contests[0]
   //On 1st submit, we get a 400, on 2nd submit it does work (when we .then(console.log)) if we .then(json  => this.getSens(json.contests[0])), then it errors out (same error that fixed itself earlier today) <after messing w/ it for a while it would work on the 4th submit>
