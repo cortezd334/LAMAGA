@@ -1,15 +1,23 @@
+import React from "react";
 
-import React from 'react';
-
-import RepresentativeCard from '../Cards/RepresentativeCard.js'
+import RepresentativeCard from "../Cards/RepresentativeCard.js";
 
 class RepresentativeContainer extends React.Component {
+  renderReps = () => {
+    let representatives = this.props.repsObject.candidates;
 
-    render() {
-        return (
-            <div></div>
-        // console.log('hi')
-        )
-    }
+    return representatives.map(rep => {
+      return (
+        <RepresentativeCard rep={rep} key={rep.name} name={rep.name} party={rep.party} candidateUrl={rep.candidateUrl}/>
+      );
+    });
+  };
+
+  render() {
+    return (
+      <div>
+        {this.renderReps()}
+      </div>);
+  }
 }
 export default RepresentativeContainer;
