@@ -7,7 +7,15 @@ class SenatorContainer extends React.Component {
     let senators = this.props.senObject.candidates;
 
     return senators.map((sen) => {
-      return <SenatorCard sen={sen} key={sen.name} />;
+      return (
+        <SenatorCard
+          sen={sen}
+          key={sen.name}
+          name={sen.name}
+          party={sen.party}
+          candidateUrl={sen.candidateUrl}
+        />
+      );
     });
   };
 

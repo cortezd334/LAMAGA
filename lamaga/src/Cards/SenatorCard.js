@@ -2,13 +2,27 @@ import React from "react";
 
 class SenatorCard extends React.Component {
   render() {
-    let { name, party, candidateURL } = this.props;
     return (
       <div>
-        {this.props.name}
-        <SenatorCard name={name} party={party} url={candidateURL} />
+        <div className="card-body">
+          <h5 className="card-title"> {this.props.name}</h5>
+          <p className="card-text">
+            {" "}
+            Party: {this.props.party} <br />
+            <a href={this.props.candidateUrl}>Website</a>
+          </p>
+        </div>
       </div>
     );
   }
 }
 export default SenatorCard;
+
+// <div>
+//   <div className="card" onClick={() => props.modify(props.stock)}>
+//     <div className="card-body">
+//       <h5 className="card-title">{props.stock.name}</h5>
+//       <p className="card-text">{props.stock.price}</p>
+//     </div>
+//   </div>
+// </div>;
