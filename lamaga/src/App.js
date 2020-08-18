@@ -41,8 +41,10 @@ class App extends React.Component {
     )
       .then((res) => res.json())
       .then((sen) => {
-        let senators = sen.contests.map((con) => {
-          if (con.office == "U. S. Senator") {
+        console.log(sen);
+        sen.contests.map((con) => {
+          // if (con.office.endsWith("Senator") && con.level[0] == "country") {
+          if (con.level[0] == "country") {
             this.setState({
               senators: {
                 candidates: con.candidates,
@@ -50,6 +52,8 @@ class App extends React.Component {
               },
             });
             console.log(con.office);
+          } else {
+            console.log("hello");
           }
         });
       });
@@ -93,6 +97,7 @@ class App extends React.Component {
     this.setState({
       addressURL: after,
     });
+
     this.fetchSen(after);
   };
   //originally this was not working because the onSubmit was in the input tag instead of in the form tag
