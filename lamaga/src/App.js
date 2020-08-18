@@ -5,8 +5,9 @@ import Vote from './Components/Vote.js'
 import User from './Components/User.js'
 import State from './Components/State.js'
 import RepresentativeContainer from './Containers/RepresentativeContainer';
+import SenatorContainer from './Containers/SenatorContainer';
 
-
+//we tried putting the fetches in their respective containers but it the values weren't being passed up to the parent, so we put them back in App
 
 class App extends React.Component {
 
@@ -21,31 +22,28 @@ class App extends React.Component {
       candidates: [],
       office: '',
     }
-  }
+  };
 
-  
-  
-  fetchReps(){
-    
+  fetchReps = () => {
     let key = 'AIzaSyDmZGjlJOFg3tzG7QPoDDcYaGdesndYC3s'
-
     fetch(`https://content-civicinfo.googleapis.com/civicinfo/v2/voterinfo?address=%274526%20Mill%20Run%20Rd.%20Dallas%20TX%2075244%27&electionId=2000&key=${key}`)
     //returns candidates for '2000' election for a specific address 
     .then(res => res.json())
-    .then(json  => this.handleRepresentatives(json.contests[1])
-    )
+    .then(json  => this.getReps(json.contests[1]))
   }
-
-  fetchSen(){
-    
+  
+  fetchSen = () => {
     let key = 'AIzaSyDmZGjlJOFg3tzG7QPoDDcYaGdesndYC3s'
     fetch(`https://content-civicinfo.googleapis.com/civicinfo/v2/voterinfo?address=%27${this.state.addressURL}%27&electionId=2000&key=${key}`)
     .then(res => res.json())
-    .then(json  => this.handleSenators(json.contests[0])
-    )
+    .then(console.log)
+    // .then(json  => this.getSens(json.contests[0]))
   }
+//Apparently not all the data is formatted the same,for the TX address senators were json.contests[0] and reps. were json.contests[1]---but for my address senators are json.contests[5] and reps. are json.contests[0]
+//On 1st submit, we get a 400, on 2nd submit it does work (when we .then(console.log)) if we .then(json  => this.getSens(json.contests[0])), then it errors out (same error that fixed itself earlier today) <after messing w/ it for a while it would work on the 4th submit>
+//componentDidMount did not help w/ fixing this problem
 
-  handleRepresentatives = (reps) => {
+  getReps = (reps) => {
     console.log('representatives', reps)
     let can = reps.candidates
     this.setState({
@@ -55,7 +53,8 @@ class App extends React.Component {
       } 
     })
   }
-  handleSenators = (sen) => {
+  
+  getSens = (sen) => {
     console.log('senators', sen)
     let can = sen.candidates
     this.setState({
@@ -67,54 +66,37 @@ class App extends React.Component {
   }
 
   handleChange = (event) => {
-
-    
-    
-    
     this.setState({ address: event.target.value })
-    
   }
   
   addressSubmit = (e) => {
     e.preventDefault();
-   let address = this.state.address;
-
-   let before = address.split(' ')
-
-
+    let address = this.state.address;
+    let before = address.split(' ')
     let after = before.join("%20")
     this.setState({
       addressURL: after
     })
-    console.log('new Address', after)
     this.fetchSen()
-
-    // this.fetchSen(after)
-
-  //  this.fetchCandidates(address)
   }
-  
-  // handleFormSubmit = (e) => { 
-    
-  
-  // }
-  
-  
-  
+  //originally this was not working because the onSubmit was in the input tag instead of in the form tag
+
   render() {
-  return (   
-    <div>
-    <RepresentativeContainer repsObject={this.state.representatives} />   
-        <form>
-          <label>
-          Address: 
-          <input  type="text" name="address" onSubmit={this.addressSubmit} onChange={this.handleChange} placeholder="Ex: 123 Broadway St. Seattle WA 98101"/>
-          </label>
-          <input type="submit" value="Submit" />
+    return (   
+      <div>
+        <form onSubmit={(e) => this.addressSubmit(e)} >
+            <label>
+            Address:
+            <input  type="text" name="address" onChange={this.handleChange}  placeholder="Ex: 123 Broadway St. Seattle WA 98101"/>
+            </label>
+            <input type="submit" value="Submit" />
         </form>
-    </div> 
-  );
-}}
+        <RepresentativeContainer repsObject={this.state.representatives}/>   
+        <SenatorContainer repsObject={this.state.senators}/>   
+      </div> 
+    );
+  };
+};
 
 export default App;
 
