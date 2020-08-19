@@ -18,12 +18,7 @@ class SenatorContainer extends React.Component {
     // console.log(this.props.repsObject)
     return (
       <div>
-<<<<<<< HEAD
-        {/* <SenatorCard sens={this.renderSenators}/> */}
         {this.renderSenators()}
-=======
-        {/* {this.renderSenators()} */}
->>>>>>> 60ea37814265a56faad8d092b0def6bb7d37f807
       </div>);
   }
 }
