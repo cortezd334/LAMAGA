@@ -20,12 +20,16 @@ class App extends React.Component {
     addressURL: "",
     representatives: {
       candidates: [],
-      office: "",
+      office: ""
     },
     senators: {
       candidates: [],
-      office: "",
+      office: ""
     },
+    user: {
+      id: 0,
+      username: ""
+    }
   };
 
   fetchReps = (url) => {
@@ -94,6 +98,7 @@ class App extends React.Component {
   };
 
   handleChange = (event) => {
+    console.log('oops')
     this.setState({ address: event.target.value });
   };
 
@@ -109,29 +114,33 @@ class App extends React.Component {
     this.fetchReps(after);
   };
 
-  handleLogin = (e, userInfo) =>{
+  handleSignup = (e, userInfo) => {
     e.preventDefault()
-    console.log('login')
-  }
-
-  handleSignup = (e,userInfo) => {
-    e.preventDefault()
-    fetch('http://localhost:3000/users',{
-      method:"POST",
-      headers:{
-        'Content-Type':'application/json'
+    fetch('http://localhost:3000/users', {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
       },
-      body:JSON.stringify(userInfo)
+      body: JSON.stringify(userInfo)
     })
     .then(res => res.json())
     .then(console.log)
-   }
+  }
 
-  renderHome = () => <Home su b={this.addressSubmit} change={this.handleChange}/>
-  renderLoginPage = () => <Login handleLoginOrSignup={this.handleLogin}/>
-  renderSignUpPage = () =>  <Login handleLoginOrSignup={this.handleSignup}/>
+  handleLogin = (e, userInfo) => {
+    e.preventDefault();
+    console.log('login')
+  }
 
-  // renderReps = () => <RepresentativeContainer repsObject={this.state.representatives}/>   
+  renderHome = () => <Home sub={this.addressSubmit} change={this.handleChange}/>
+  
+  renderSignup = () => <Signup signup={this.handleSignup}/>
+
+  renderLogin = () => <Login login={this.handleLogin}/>
+
+  renderCandidates = () => {
+    return <RepresentativeContainer repsObject={this.state.representatives}/> && <SenatorContainer repsObject={this.state.senators}/>   
+  }
   //this would be activated when the route path to candidates is activated
 
   render() {
@@ -157,19 +166,18 @@ class App extends React.Component {
 
         <Switch>
         <Route exact path='/' render={this.renderHome}/>
-        <Route path='/signup' render={this.renderSignUpPage}/>
-        <Route path='/login' render={this.renderLoginPage}/>
-
+        <Route path='/signup' render={this.renderSignup}/>
+        <Route path='/login' render={this.renderLogin}/>
         <Route path='/profile' component={User}/>
-        {/* <Route path='/candidates' render={this.renderReps}/> */}
+        <Route path='/candidates' render={this.renderCandidates}/>
         {/* <Route path='senators' render={this}/> */}
         {/* didn't finish working on these (that have a corresponding function cuz I need to figure out redirects) */}
         <Route component={NotFound}/>
         </Switch>
 
-        <RepresentativeContainer repsObject={this.state.representatives}/>   
-        <SenatorContainer repsObject={this.state.senators}/>  
-        
+        {/* <RepresentativeContainer repsObject={this.state.representatives}/>    */}
+        {/* <SenatorContainer repsObject={this.state.senators}/>   */}
+        {/* these are still here until I figure out redirects */}
       </div> 
     );
   }
