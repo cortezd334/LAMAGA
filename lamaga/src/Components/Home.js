@@ -2,11 +2,9 @@ import React from 'react';
 
 const Home = (props) => {
 
-    console.log(props.change)
     return (
         <div>
             <form onSubmit={(e) => props.sub(e)}>
-            {/* <form> */}
                 <label>
                     Address:
                     <input

@@ -23,7 +23,8 @@ class App extends React.Component {
     senators: {
       candidates: [],
       office: ""
-    }
+    },
+
   };
 
   fetchReps = (url) => {
@@ -108,8 +109,11 @@ class App extends React.Component {
 
   renderHome = () => <Home sub={this.addressSubmit} change={this.handleChange}/>
   
-
-  // renderReps = () => <RepresentativeContainer repsObject={this.state.representatives}/>   
+  renderSignup = () => <S
+  renderLogin
+  renderCandidates = () => {
+    return <RepresentativeContainer repsObject={this.state.representatives}/> && <SenatorContainer repsObject={this.state.senators}/>   
+  }
   //this would be activated when the route path to candidates is activated
 
   render() {
@@ -135,17 +139,17 @@ class App extends React.Component {
 
         <Switch>
         <Route exact path='/' render={this.renderHome}/>
-        <Route path='/signup' component={Signup}/>
-        <Route path='/login' component={Login}/>
+        <Route path='/signup' render={this.renderSignup}/>
+        <Route path='/login' render={this.renderLogin}/>
         <Route path='/profile' component={User}/>
-        {/* <Route path='/candidates' render={this.renderReps}/> */}
+        <Route path='/candidates' render={this.renderCandidates}/>
         {/* <Route path='senators' render={this}/> */}
         {/* didn't finish working on these (that have a corresponding function cuz I need to figure out redirects) */}
         <Route component={NotFound}/>
         </Switch>
 
-        <RepresentativeContainer repsObject={this.state.representatives}/>   
-        <SenatorContainer repsObject={this.state.senators}/>  
+        {/* <RepresentativeContainer repsObject={this.state.representatives}/>    */}
+        {/* <SenatorContainer repsObject={this.state.senators}/>   */}
         {/* these are still here until I figure out redirects */}
       </div> 
     );
