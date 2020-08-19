@@ -106,6 +106,9 @@ class App extends React.Component {
     this.fetchReps(after);
   };
 
+  renderHome = () => <Home sub={this.addressSubmit} change={this.handleChange}/>
+  
+
   // renderReps = () => <RepresentativeContainer repsObject={this.state.representatives}/>   
   //this would be activated when the route path to candidates is activated
 
@@ -131,7 +134,7 @@ class App extends React.Component {
         </header>
 
         <Switch>
-        <Route path='/' component={Home}/>
+        <Route exact path='/' render={this.renderHome}/>
         <Route path='/signup' component={Signup}/>
         <Route path='/login' component={Login}/>
         <Route path='/profile' component={User}/>
@@ -141,18 +144,6 @@ class App extends React.Component {
         <Route component={NotFound}/>
         </Switch>
 
-        <form onSubmit={(e) => this.addressSubmit(e)}>
-          <label>
-              Address:
-              <input
-              type="text"
-              name="address"
-              onChange={this.handleChange}
-              placeholder="Ex: 123 Broadway St. Seattle WA 98101"
-              />
-          </label>
-          <input type="submit" value="Submit" />
-        </form>
         <RepresentativeContainer repsObject={this.state.representatives}/>   
         <SenatorContainer repsObject={this.state.senators}/>  
         {/* these are still here until I figure out redirects */}
