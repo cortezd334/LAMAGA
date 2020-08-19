@@ -16,7 +16,7 @@ class SenatorContainer extends React.Component {
   render() {
     return (
       <div>
-        {this.renderSenators()}
+        {/* {this.renderSenators()} */}
       </div>);
   }
 }
