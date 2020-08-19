@@ -122,7 +122,7 @@ class App extends React.Component {
           <h2>Let's ACTUALLY Make America Great Again!</h2>
           <ul>
             <li>
-              <NavLink to='/home'>Home</NavLink>
+              <NavLink to='/'>Home</NavLink>
             </li>
             <li>
               <NavLink to='/signup'>Sign Up</NavLink>
