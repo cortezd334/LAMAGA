@@ -109,8 +109,27 @@ class App extends React.Component {
     this.fetchReps(after);
   };
 
-  renderHome = () => <Home sub={this.addressSubmit} change={this.handleChange}/>
-  
+  handleLogin = (e, userInfo) =>{
+    e.preventDefault()
+    console.log('login')
+  }
+
+  handleSignup = (e,userInfo) => {
+    e.preventDefault()
+    fetch('http://localhost:3000/users',{
+      method:"POST",
+      headers:{
+        'Content-Type':'application/json'
+      },
+      body:JSON.stringify(userInfo)
+    })
+    .then(res => res.json())
+    .then(console.log)
+   }
+
+  renderHome = () => <Home su b={this.addressSubmit} change={this.handleChange}/>
+  renderLoginPage = () => <Login handleLoginOrSignup={this.handleLogin}/>
+  renderSignUpPage = () =>  <Login handleLoginOrSignup={this.handleSignup}/>
 
   // renderReps = () => <RepresentativeContainer repsObject={this.state.representatives}/>   
   //this would be activated when the route path to candidates is activated
@@ -122,7 +141,7 @@ class App extends React.Component {
           <h2>Let's ACTUALLY Make America Great Again!</h2>
           <ul>
             <li>
-              <NavLink to='/'>Home</NavLink>
+              <NavLink to='/' exact >Home</NavLink>
             </li>
             <li>
               <NavLink to='/signup'>Sign Up</NavLink>
@@ -138,8 +157,9 @@ class App extends React.Component {
 
         <Switch>
         <Route exact path='/' render={this.renderHome}/>
-        <Route path='/signup' component={Signup}/>
-        <Route path='/login' component={Login}/>
+        <Route path='/signup' render={this.renderSignUpPage}/>
+        <Route path='/login' render={this.renderLoginPage}/>
+
         <Route path='/profile' component={User}/>
         {/* <Route path='/candidates' render={this.renderReps}/> */}
         {/* <Route path='senators' render={this}/> */}
