@@ -6,6 +6,7 @@ import User from './Components/User.js'
 import State from './Components/State.js'
 import Signup from './Components/Signup.js'
 import Login from './Components/Login.js'
+import Register from './Components/Register.js'
 import Home from './Components/Home.js'
 import NotFound from './Components/NotFound.js'
 import RepresentativeContainer from './Containers/RepresentativeContainer';
@@ -116,6 +117,7 @@ class App extends React.Component {
 
   handleSignup = (e, userInfo) => {
     e.preventDefault()
+    console.log(userInfo)
     fetch('http://localhost:3000/users', {
       method: "POST",
       headers: {
@@ -132,11 +134,13 @@ class App extends React.Component {
     console.log('login')
   }
 
+
   renderHome = () => <Home sub={this.addressSubmit} change={this.handleChange}/>
   
   renderSignup = () => <Signup signup={this.handleSignup}/>
 
   renderLogin = () => <Login login={this.handleLogin}/>
+  renderRegister = () => <Register register={this.handleRegister}/>
 
   renderCandidates = () => {
     return <RepresentativeContainer repsObject={this.state.representatives}/> && <SenatorContainer repsObject={this.state.senators}/>   
@@ -150,13 +154,16 @@ class App extends React.Component {
           <h2>Let's ACTUALLY Make America Great Again!</h2>
           <ul>
             <li>
-              <NavLink to='/'>Home</NavLink>
+              <NavLink to='/' exact >Home</NavLink>
             </li>
             <li>
               <NavLink to='/signup'>Sign Up</NavLink>
             </li>
             <li>
               <NavLink to='/login'>Log In</NavLink>
+            </li>
+            <li>
+              <NavLink to='/register'>Register To Vote</NavLink>
             </li>
             <li>
               <NavLink to='/profile'>My Profile</NavLink>
@@ -168,6 +175,7 @@ class App extends React.Component {
         <Route exact path='/' render={this.renderHome}/>
         <Route path='/signup' render={this.renderSignup}/>
         <Route path='/login' render={this.renderLogin}/>
+        <Route path='/register' render={this.renderRegister}/>
         <Route path='/profile' component={User}/>
         <Route path='/candidates' render={this.renderCandidates}/>
         {/* <Route path='senators' render={this}/> */}
