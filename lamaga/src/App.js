@@ -12,18 +12,20 @@ import RepresentativeContainer from './Containers/RepresentativeContainer';
 import SenatorContainer from './Containers/SenatorContainer';
 import {Route, Switch, Link, NavLink, Router} from 'react-router-dom'
 
+//we tried putting the fetches in their respective containers but it the values weren't being passed up to the parent, so we put them back in App
+
 class App extends React.Component {
   state = {
     address: "",
     addressURL: "",
     representatives: {
       candidates: [],
-      office: ""
+      office: "",
     },
     senators: {
       candidates: [],
-      office: ""
-    }
+      office: "",
+    },
   };
 
   fetchReps = (url) => {
@@ -31,24 +33,25 @@ class App extends React.Component {
     fetch(
       `https://content-civicinfo.googleapis.com/civicinfo/v2/voterinfo?address=%27${url}%27&electionId=2000&key=${key}`
     )
-    .then((res) => res.json())
-    .then((json) => {
-      json.contests.map((con) => {
-        if (
-          con.office &&
-          con.office.includes("Representative") &&
-          con.level &&
-          con.level[0] == "country"
-        ) {
-          this.setState({
-            representatives: {
-              candidates: con.candidates,
-              office: con.office
-            }
-          });
-        }
+      //returns candidates for '2000' election for a specific address
+      .then((res) => res.json())
+      .then((json) => {
+        json.contests.map((con) => {
+          if (
+            con.office &&
+            con.office.includes("Representative") &&
+            con.level &&
+            con.level[0] == "country"
+          ) {
+            this.setState({
+              representatives: {
+                candidates: con.candidates,
+                office: con.office,
+              },
+            });
+          }
+        });
       });
-    });
   };
 
   fetchSen = (url) => {
@@ -75,7 +78,7 @@ class App extends React.Component {
       representatives: {
         candidates: can,
         office: reps.office,
-      }
+      },
     });
   };
 
@@ -86,7 +89,7 @@ class App extends React.Component {
       representatives: {
         candidates: can,
         office: sen.office,
-      }
+      },
     });
   };
 
@@ -106,9 +109,6 @@ class App extends React.Component {
     this.fetchReps(after);
   };
 
-  // renderReps = () => <RepresentativeContainer repsObject={this.state.representatives}/>   
-  //this would be activated when the route path to candidates is activated
-
   render() {
     return (
       <div className="App">
@@ -116,7 +116,7 @@ class App extends React.Component {
           <h2>Let's ACTUALLY Make America Great Again!</h2>
           <ul>
             <li>
-              <NavLink to='/'>Home</NavLink>
+              <NavLink to='/home'>Home</NavLink>
             </li>
             <li>
               <NavLink to='/signup'>Sign Up</NavLink>
@@ -129,33 +129,27 @@ class App extends React.Component {
             </li>
           </ul>
         </header>
-
-        <Switch>
-        <Route path='/' component={Home}/>
-        <Route path='/signup' component={Signup}/>
-        <Route path='/login' component={Login}/>
-        <Route path='/profile' component={User}/>
-        {/* <Route path='/candidates' render={this.renderReps}/> */}
-        {/* <Route path='senators' render={this}/> */}
-        {/* didn't finish working on these (that have a corresponding function cuz I need to figure out redirects) */}
-        <Route component={NotFound}/>
-        </Switch>
-
         <form onSubmit={(e) => this.addressSubmit(e)}>
           <label>
-              Address:
-              <input
+            Address:
+            <input
               type="text"
               name="address"
               onChange={this.handleChange}
               placeholder="Ex: 123 Broadway St. Seattle WA 98101"
-              />
+            />
           </label>
           <input type="submit" value="Submit" />
         </form>
         <RepresentativeContainer repsObject={this.state.representatives}/>   
         <SenatorContainer repsObject={this.state.senators}/>  
-        {/* these are still here until I figure out redirects */}
+        <Switch>
+        <Route path='/home' component={Home}/>
+        <Route path='/signup' component={Signup}/>
+        <Route path='/login' component={Login}/>
+        <Route path='/profile' component={User}/>
+        <Route component={NotFound}/>
+        </Switch>
       </div> 
     );
   }
