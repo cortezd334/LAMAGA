@@ -26,7 +26,10 @@ class App extends React.Component {
       candidates: [],
       office: ""
     },
-
+    user: {
+      id: 0,
+      username: ""
+    }
   };
 
   fetchReps = (url) => {
@@ -95,6 +98,7 @@ class App extends React.Component {
   };
 
   handleChange = (event) => {
+    console.log('oops')
     this.setState({ address: event.target.value });
   };
 
@@ -110,10 +114,30 @@ class App extends React.Component {
     this.fetchReps(after);
   };
 
+  handleSignup = (e, userInfo) => {
+    e.preventDefault()
+    fetch('http://localhost:3000/users', {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(userInfo)
+    })
+    .then(res => res.json())
+    .then(console.log)
+  }
+
+  handleLogin = (e, userInfo) => {
+    e.preventDefault();
+    console.log('login')
+  }
+
   renderHome = () => <Home sub={this.addressSubmit} change={this.handleChange}/>
   
-  renderSignup = () => <S />
-  renderLogin
+  renderSignup = () => <Signup signup={this.handleSignup}/>
+
+  renderLogin = () => <Login login={this.handleLogin}/>
+
   renderCandidates = () => {
     return <RepresentativeContainer repsObject={this.state.representatives}/> && <SenatorContainer repsObject={this.state.senators}/>   
   }

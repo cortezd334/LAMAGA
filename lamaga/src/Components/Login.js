@@ -9,6 +9,8 @@ const Login = () => {
                 <br/>
                 <label>Password: </label>
                 <input></input>
+                <br/>
+                <input type="submit" value="Submit"/>
             </form>
         </div>
     );
