@@ -12,6 +12,8 @@ import RepresentativeContainer from './Containers/RepresentativeContainer';
 import SenatorContainer from './Containers/SenatorContainer';
 import {Route, Switch, Link, NavLink, Router} from 'react-router-dom'
 
+//we tried putting the fetches in their respective containers but it the values weren't being passed up to the parent, so we put them back in App
+
 class App extends React.Component {
   state = {
     address: "",
@@ -32,24 +34,25 @@ class App extends React.Component {
     fetch(
       `https://content-civicinfo.googleapis.com/civicinfo/v2/voterinfo?address=%27${url}%27&electionId=2000&key=${key}`
     )
-    .then((res) => res.json())
-    .then((json) => {
-      json.contests.map((con) => {
-        if (
-          con.office &&
-          con.office.includes("Representative") &&
-          con.level &&
-          con.level[0] == "country"
-        ) {
-          this.setState({
-            representatives: {
-              candidates: con.candidates,
-              office: con.office
-            }
-          });
-        }
+      //returns candidates for '2000' election for a specific address
+      .then((res) => res.json())
+      .then((json) => {
+        json.contests.map((con) => {
+          if (
+            con.office &&
+            con.office.includes("Representative") &&
+            con.level &&
+            con.level[0] == "country"
+          ) {
+            this.setState({
+              representatives: {
+                candidates: con.candidates,
+                office: con.office,
+              },
+            });
+          }
+        });
       });
-    });
   };
 
   fetchSen = (url) => {
@@ -76,7 +79,7 @@ class App extends React.Component {
       representatives: {
         candidates: can,
         office: reps.office,
-      }
+      },
     });
   };
 
@@ -87,7 +90,7 @@ class App extends React.Component {
       representatives: {
         candidates: can,
         office: sen.office,
-      }
+      },
     });
   };
 
@@ -109,7 +112,7 @@ class App extends React.Component {
 
   renderHome = () => <Home sub={this.addressSubmit} change={this.handleChange}/>
   
-  renderSignup = () => <S
+  renderSignup = () => <S />
   renderLogin
   renderCandidates = () => {
     return <RepresentativeContainer repsObject={this.state.representatives}/> && <SenatorContainer repsObject={this.state.senators}/>   
