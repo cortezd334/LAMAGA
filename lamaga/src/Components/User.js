@@ -7,10 +7,15 @@ class User extends React.Component {
             .then(console.log);
       }
 
-    render() {
+    componentDidMount = () => {
+        fetch(`http://localhost:3000/users/${localStorage.getItem("userID")}`) 
+        .then((res) => res.json())
+        .then(console.log);
+    }
+
+    render(){
         return (
             <div>
-                {this.renderUserInfo()}
             </div>
         )
     }

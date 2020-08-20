@@ -142,6 +142,8 @@ class App extends React.Component {
     .then(res => res.json())
     .then(json => {
       if(!json.error){
+        localStorage.setItem("userID", json.id);
+        console.log(localStorage.getItem)
         this.setState({
           user: {
             id: json.id,
