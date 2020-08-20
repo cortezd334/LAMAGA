@@ -14,10 +14,6 @@ import SenatorContainer from './Containers/SenatorContainer';
 import {Route, Switch, Link, NavLink, withRouter} from 'react-router-dom'
 import PollingLocations from './Components/PollingLocations';
 
-//I just realized that we are supposed to go through state before we go to the reps/senate containers.
-//If it's cool w/ you guys how about we keep it like this for now, and once MVP is set up and it's pretty then we go back to try to fix it?
-//I also somewhat protected the api key
-
 class App extends React.Component {
   state = {
     address: "",
@@ -52,7 +48,6 @@ class App extends React.Component {
             representatives: {
               candidates: con.candidates,
               office: con.office
-            // }
             }}, () => {this.props.history.push('/candidates')
           });
         }
@@ -60,16 +55,23 @@ class App extends React.Component {
     });
   };
 
+  //need to clear out senators before setting again
+
   fetchSen = (url) => {
     fetch(`https://content-civicinfo.googleapis.com/civicinfo/v2/voterinfo?address=%27${url}%27&electionId=2000&key=${process.env.REACT_APP_KEY}`)
     .then(res => res.json())
     .then(sen => sen.contests.map(con => {
         if (con.office && con.office.endsWith("Senator") && con.level && con.level[0] == "country") {
+          // this.setState({
+          //   senators: {
+          //     candidates: '',
+          //     office: ''
+          //   }
+          // })
           this.setState({
             senators: {
               candidates: con.candidates,
                 office: con.office
-              // }
             }}, () => {this.props.history.push('/candidates')
           });
         };
@@ -115,6 +117,21 @@ class App extends React.Component {
     this.fetchReps(after);
   };
 
+  pickCandidate = (e, card) => {
+    console.log(card)
+    fetch('http://localhost:3000/votes', {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      // body: JSON.stringify(card)
+      body: JSON.stringify({vote: {name: card.name, party: card.party, candidateUrl: card.candidateUrl}})
+      // body: JSON.stringify({name: card.name, party: card.party, candidateUrl: card.candidateUrl})
+    })
+    .then(res => res.json())
+    .then(console.log)
+  }
+
   handleSignup = (e, userInfo) => {
     e.preventDefault()
     console.log(userInfo)
@@ -126,7 +143,7 @@ class App extends React.Component {
       body: JSON.stringify(userInfo)
     })
     .then(res => res.json())
-    .then(console.log)
+    .then(() => {this.props.history.push('/login')})
   }
 
   handleLogin = (e, userInfo) => {
@@ -142,7 +159,6 @@ class App extends React.Component {
     .then(json => {
       if(!json.error){
         localStorage.setItem("userID", json.id);
-        console.log(localStorage.getItem)
         this.setState({
           user: {
             id: json.id,
@@ -166,8 +182,8 @@ class App extends React.Component {
   renderCandidates = () => {
     return (
       <div>
-        <RepresentativeContainer repsObject={this.state.representatives}/>
-        <SenatorContainer repsObject={this.state.senators}/>
+        <RepresentativeContainer repsObject={this.state.representatives} add={this.pickCandidate}/>
+        <SenatorContainer repsObject={this.state.senators} add={this.pickCandidate}/>
       </div>
     )
   }
@@ -175,7 +191,6 @@ class App extends React.Component {
   renderPollingLocations = () => <PollingLocations address={this.state.addressURL}/>
 
   render() {
-    // console.log(this.state)
     return (
       <div className="App">
         <header>
