@@ -33,8 +33,8 @@ class App extends React.Component {
   };
 
   fetchReps = (url) => {
-    "AIzaSyDmZGjlJOFg3tzG7QPoDDcYaGdesndYC3s";
-    fetch(`https://content-civicinfo.googleapis.com/civicinfo/v2/voterinfo?address=%27${url}%27&electionId=2000&key=${process.env.REACT_APP_KEY}`)
+    let api= "AIzaSyDmZGjlJOFg3tzG7QPoDDcYaGdesndYC3s";
+    fetch(`https://content-civicinfo.googleapis.com/civicinfo/v2/voterinfo?address=%27${url}%27&electionId=2000&key=${api}`)
     .then((res) => res.json())
     .then((json) => {
       json.contests.map((con) => {
@@ -42,7 +42,7 @@ class App extends React.Component {
           con.office &&
           con.office.includes("Representative") &&
           con.level &&
-          con.level[0] == "country"
+          con.level[0] === "country"
         ) {
           this.setState({
             representatives: {
@@ -58,10 +58,11 @@ class App extends React.Component {
   //need to clear out senators before setting again
 
   fetchSen = (url) => {
-    fetch(`https://content-civicinfo.googleapis.com/civicinfo/v2/voterinfo?address=%27${url}%27&electionId=2000&key=${process.env.REACT_APP_KEY}`)
+    let api= "AIzaSyDmZGjlJOFg3tzG7QPoDDcYaGdesndYC3s";
+    fetch(`https://content-civicinfo.googleapis.com/civicinfo/v2/voterinfo?address=%27${url}%27&electionId=2000&key=${api}`)
     .then(res => res.json())
     .then(sen => sen.contests.map(con => {
-        if (con.office && con.office.endsWith("Senator") && con.level && con.level[0] == "country") {
+        if (con.office && con.office.endsWith("Senator") && con.level && con.level[0] === "country") {
           // this.setState({
           //   senators: {
           //     candidates: '',
@@ -194,7 +195,8 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <header>
+        <header >
+        <p>{this.state.user.username}</p>
           <h2>Let's ACTUALLY Make America Great Again!</h2>
           <ul>
             <li>
