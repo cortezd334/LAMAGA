@@ -124,9 +124,7 @@ class App extends React.Component {
       headers: {
         'Content-Type': 'application/json'
       },
-      // body: JSON.stringify(card)
       body: JSON.stringify({vote: {name: card.name, party: card.party, candidateUrl: card.candidateUrl}})
-      // body: JSON.stringify({name: card.name, party: card.party, candidateUrl: card.candidateUrl})
     })
     .then(res => res.json())
     .then(console.log)
@@ -140,7 +138,7 @@ class App extends React.Component {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(userInfo)
+      body: JSON.stringify({user: userInfo})
     })
     .then(res => res.json())
     .then(() => {this.props.history.push('/login')})
@@ -164,13 +162,16 @@ class App extends React.Component {
             id: json.id,
             username: json.username}}, 
             () => {this.props.history.push('/profile')
-        })
+          })
       }else {
         alert(json.error)
       }
     })
   }
 
+  logout = () => {
+    localStorage.clear()
+  }
 
   renderHome = () => <Home sub={this.addressSubmit} change={this.handleChange}/>
   
@@ -213,6 +214,9 @@ class App extends React.Component {
             </li>
             <li>
               <NavLink to='/locations'>Polling Location</NavLink>
+            </li>
+            <li>
+              <NavLink onClick={this.logout}to='/login'>Log Out</NavLink>
             </li>
           </ul>
         </header>
