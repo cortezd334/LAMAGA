@@ -179,7 +179,8 @@ class App extends React.Component {
     // console.log(process.env.REACT_APP_KEY)
     return (
       <div className="App">
-        <header>
+        <header >
+        <p>{this.state.user.username}</p>
           <h2>Let's ACTUALLY Make America Great Again!</h2>
           <ul>
             <li>
