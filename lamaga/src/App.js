@@ -37,8 +37,8 @@ class App extends React.Component {
   };
 
   fetchReps = (url) => {
-    "AIzaSyDmZGjlJOFg3tzG7QPoDDcYaGdesndYC3s";
-    fetch(`https://content-civicinfo.googleapis.com/civicinfo/v2/voterinfo?address=%27${url}%27&electionId=2000&key=${process.env.REACT_APP_KEY}`)
+    let api= "AIzaSyDmZGjlJOFg3tzG7QPoDDcYaGdesndYC3s";
+    fetch(`https://content-civicinfo.googleapis.com/civicinfo/v2/voterinfo?address=%27${url}%27&electionId=2000&key=${api}`)
     .then((res) => res.json())
     .then((json) => {
       json.contests.map((con) => {
@@ -61,7 +61,8 @@ class App extends React.Component {
   };
 
   fetchSen = (url) => {
-    fetch(`https://content-civicinfo.googleapis.com/civicinfo/v2/voterinfo?address=%27${url}%27&electionId=2000&key=${process.env.REACT_APP_KEY}`)
+    let api= "AIzaSyDmZGjlJOFg3tzG7QPoDDcYaGdesndYC3s";
+    fetch(`https://content-civicinfo.googleapis.com/civicinfo/v2/voterinfo?address=%27${url}%27&electionId=2000&key=${api}`)
     .then(res => res.json())
     .then(sen => sen.contests.map(con => {
         if (con.office && con.office.endsWith("Senator") && con.level && con.level[0] == "country") {
@@ -173,7 +174,7 @@ class App extends React.Component {
   renderPollingLocations = () => <PollingLocations address={this.state.addressURL}/>
 
   render() {
-    // console.log(this.state)
+    // console.log(process.env.REACT_APP_KEY)
     return (
       <div className="App">
         <header>
