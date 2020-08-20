@@ -11,9 +11,12 @@ import Home from './Components/Home.js'
 import NotFound from './Components/NotFound.js'
 import RepresentativeContainer from './Containers/RepresentativeContainer';
 import SenatorContainer from './Containers/SenatorContainer';
-import {Route, Switch, Link, NavLink, Router} from 'react-router-dom'
+import {Route, Switch, Link, NavLink, withRouter} from 'react-router-dom'
+import PollingLocations from './Components/PollingLocations';
 
-//we tried putting the fetches in their respective containers but it the values weren't being passed up to the parent, so we put them back in App
+//I just realized that we are supposed to go through state before we go to the reps/senate containers.
+//If it's cool w/ you guys how about we keep it like this for now, and once MVP is set up and it's pretty then we go back to try to fix it?
+//I also somewhat protected the api key
 
 class App extends React.Component {
   state = {
@@ -34,42 +37,40 @@ class App extends React.Component {
   };
 
   fetchReps = (url) => {
-    let key = "AIzaSyDmZGjlJOFg3tzG7QPoDDcYaGdesndYC3s";
-    fetch(
-      `https://content-civicinfo.googleapis.com/civicinfo/v2/voterinfo?address=%27${url}%27&electionId=2000&key=${key}`
-    )
-      //returns candidates for '2000' election for a specific address
-      .then((res) => res.json())
-      .then((json) => {
-        json.contests.map((con) => {
-          if (
-            con.office &&
-            con.office.includes("Representative") &&
-            con.level &&
-            con.level[0] == "country"
-          ) {
-            this.setState({
-              representatives: {
-                candidates: con.candidates,
-                office: con.office,
-              },
-            });
-          }
-        });
+    "AIzaSyDmZGjlJOFg3tzG7QPoDDcYaGdesndYC3s";
+    fetch(`https://content-civicinfo.googleapis.com/civicinfo/v2/voterinfo?address=%27${url}%27&electionId=2000&key=${process.env.REACT_APP_KEY}`)
+    .then((res) => res.json())
+    .then((json) => {
+      json.contests.map((con) => {
+        if (
+          con.office &&
+          con.office.includes("Representative") &&
+          con.level &&
+          con.level[0] == "country"
+        ) {
+          this.setState({
+            representatives: {
+              candidates: con.candidates,
+              office: con.office
+            // }
+            }}, () => {this.props.history.push('/candidates')
+          });
+        }
       });
+    });
   };
 
   fetchSen = (url) => {
-    let key = "AIzaSyDmZGjlJOFg3tzG7QPoDDcYaGdesndYC3s";
-    fetch(`https://content-civicinfo.googleapis.com/civicinfo/v2/voterinfo?address=%27${url}%27&electionId=2000&key=${key}`)
+    fetch(`https://content-civicinfo.googleapis.com/civicinfo/v2/voterinfo?address=%27${url}%27&electionId=2000&key=${process.env.REACT_APP_KEY}`)
     .then(res => res.json())
     .then(sen => sen.contests.map(con => {
         if (con.office && con.office.endsWith("Senator") && con.level && con.level[0] == "country") {
           this.setState({
             senators: {
               candidates: con.candidates,
-              office: con.office
-            }
+                office: con.office
+              // }
+            }}, () => {this.props.history.push('/candidates')
           });
         };
       })
@@ -99,7 +100,6 @@ class App extends React.Component {
   };
 
   handleChange = (event) => {
-    console.log('oops')
     this.setState({ address: event.target.value });
   };
 
@@ -131,7 +131,26 @@ class App extends React.Component {
 
   handleLogin = (e, userInfo) => {
     e.preventDefault();
-    console.log('login')
+    fetch('http://localhost:3000/login', {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(userInfo)
+    })
+    .then(res => res.json())
+    .then(json => {
+      if(!json.error){
+        this.setState({
+          user: {
+            id: json.id,
+            username: json.username}}, 
+            () => {this.props.history.push('/profile')
+        })
+      }else {
+        alert(json.error)
+      }
+    })
   }
 
 
@@ -143,11 +162,18 @@ class App extends React.Component {
   renderRegister = () => <Register register={this.handleRegister}/>
 
   renderCandidates = () => {
-    return <RepresentativeContainer repsObject={this.state.representatives}/> && <SenatorContainer repsObject={this.state.senators}/>   
+    return (
+      <div>
+        <RepresentativeContainer repsObject={this.state.representatives}/>
+        <SenatorContainer repsObject={this.state.senators}/>
+      </div>
+    )
   }
-  //this would be activated when the route path to candidates is activated
+
+  renderPollingLocations = () => <PollingLocations address={this.state.addressURL}/>
 
   render() {
+    // console.log(this.state)
     return (
       <div className="App">
         <header>
@@ -168,6 +194,9 @@ class App extends React.Component {
             <li>
               <NavLink to='/profile'>My Profile</NavLink>
             </li>
+            <li>
+              <NavLink to='/locations'>Polling Location</NavLink>
+            </li>
           </ul>
         </header>
 
@@ -178,20 +207,15 @@ class App extends React.Component {
         <Route path='/register' render={this.renderRegister}/>
         <Route path='/profile' component={User}/>
         <Route path='/candidates' render={this.renderCandidates}/>
-        {/* <Route path='senators' render={this}/> */}
-        {/* didn't finish working on these (that have a corresponding function cuz I need to figure out redirects) */}
+        <Route path='/locations' render={this.renderPollingLocations}/>
         <Route component={NotFound}/>
         </Switch>
-
-        {/* <RepresentativeContainer repsObject={this.state.representatives}/>    */}
-        {/* <SenatorContainer repsObject={this.state.senators}/>   */}
-        {/* these are still here until I figure out redirects */}
       </div> 
     );
   }
 }
 
-export default App;
+export default withRouter(App);
 
 // fetch(`https://www.googleapis.com/civicinfo/v2/elections?key=${key}`)
 //returns 5 elections
