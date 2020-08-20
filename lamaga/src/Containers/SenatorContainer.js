@@ -9,7 +9,7 @@ class SenatorContainer extends React.Component {
     // console.log(senators)
     return senators.map(sen => {
       return (
-        <SenatorCard sen={sen} key={sen.name} name={sen.name} party={sen.party} candidateUrl={sen.candidateUrl}/>
+        <SenatorCard sen={sen} key={sen.name} name={sen.name} party={sen.party} candidateUrl={sen.candidateUrl} add={this.props.add}/>
       );
     });
   };

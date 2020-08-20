@@ -8,7 +8,7 @@ class RepresentativeContainer extends React.Component {
 
     return representatives.map(rep => {
       return (
-        <RepresentativeCard rep={rep} key={rep.name} name={rep.name} party={rep.party} candidateUrl={rep.candidateUrl}/>
+        <RepresentativeCard rep={rep} key={rep.name} name={rep.name} party={rep.party} candidateUrl={rep.candidateUrl} add={this.props.add}/>
       );
     });
   };
