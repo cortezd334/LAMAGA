@@ -61,7 +61,20 @@ class User extends React.Component {
                 })
             })
     }
-    // wont update? 
+
+    delete = () => {
+        const activeUser = localStorage.getItem("userID");
+        fetch(`http://localhost:3000/users/${activeUser}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+        })
+        .then(res => res.json())
+        .then(json => alert(json.error))
+
+    }
+
 
 
     render(){
@@ -97,7 +110,11 @@ class User extends React.Component {
 
                 <input type="submit" value="Submit"/>
                 </form>
+                <button onClick={this.delete}>Delete Profile</button>
             </Card>
+            // <div>
+            // </div>
+            
         )
     }
 }
