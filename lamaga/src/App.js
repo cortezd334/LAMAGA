@@ -196,7 +196,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <header >
-        <p>{this.state.user.username}</p>
+        
           <h2>Let's ACTUALLY Make America Great Again!</h2>
           <ul>
             <li>
