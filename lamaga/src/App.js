@@ -33,7 +33,6 @@ class App extends React.Component {
   };
 
   fetchReps = (url) => {
-    "AIzaSyDmZGjlJOFg3tzG7QPoDDcYaGdesndYC3s";
     fetch(`https://content-civicinfo.googleapis.com/civicinfo/v2/voterinfo?address=%27${url}%27&electionId=2000&key=${process.env.REACT_APP_KEY}`)
     .then((res) => res.json())
     .then((json) => {
@@ -55,19 +54,11 @@ class App extends React.Component {
     });
   };
 
-  //need to clear out senators before setting again
-
   fetchSen = (url) => {
     fetch(`https://content-civicinfo.googleapis.com/civicinfo/v2/voterinfo?address=%27${url}%27&electionId=2000&key=${process.env.REACT_APP_KEY}`)
     .then(res => res.json())
     .then(sen => sen.contests.map(con => {
         if (con.office && con.office.endsWith("Senator") && con.level && con.level[0] == "country") {
-          // this.setState({
-          //   senators: {
-          //     candidates: '',
-          //     office: ''
-          //   }
-          // })
           this.setState({
             senators: {
               candidates: con.candidates,

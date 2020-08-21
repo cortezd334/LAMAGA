@@ -28,7 +28,7 @@ h2 {
   background-image: url("https://images01.military.com/sites/default/files/styles/full/public/media/global/newscred/2017/04/us-flag-21-apr-2017.jpeg.jpg?itok=TGwBeaGn");
   background-size: cover;
   background-position: bottom;
-  height: 240vh;
+  height: 300vh;
   display: grid;
   grid-template-rows: 300px auto;
   /* grid-template-columns: 1fr 1fr; */
