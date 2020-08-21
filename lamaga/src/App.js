@@ -180,7 +180,7 @@ class App extends React.Component {
   renderLogin = () => <Login login={this.handleLogin}/>
   renderRegister = () => <Register register={this.handleRegister}/>
 
-  renderBallot = (json) => <Ballot ballot={this.ballot}/>
+
 
   renderCandidates = () => {
     return (
@@ -196,7 +196,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <header>
+        <header className="appheader">
           <h2>Let's ACTUALLY Make America Great Again!</h2>
           <ul>
             <li>
@@ -220,9 +220,6 @@ class App extends React.Component {
             <li>
               <NavLink onClick={this.logout}to='/login'>Log Out</NavLink>
             </li>
-            <li>
-              <NavLink to='/vote'>Log Out</NavLink>
-            </li>
           </ul>
         </header>
 
@@ -233,8 +230,7 @@ class App extends React.Component {
           <Route path='/register' render={this.renderRegister}/>
           <Route path='/profile' component={User}/>
           <Route path='/candidates' render={this.renderCandidates}/>
-          <Route path='/ballot' render={this.renderBallot}/>
-          <Route path='/vote' component={Vote}/>
+          <Route path='/ballot' component={Vote}/>
           <Route component={NotFound}/>
           </Switch>
       </div> 

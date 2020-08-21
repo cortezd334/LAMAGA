@@ -6,28 +6,32 @@ import PollingLocations from './PollingLocations'
 class Vote extends React.Component {
 
     state  = {
-        candidate: []
+        candidate: [],
+        hasCandidates: false
     }
     
-    shit = () => {
+    componentDidMount (){
         fetch('http://localhost:3000/votes')
         .then(res => res.json())
         .then(json => {
-            // console.log(json)
-            json.map(can => {
-                this.setState({
-                    candidate: can
-                })
-                // <Ballot can={this.state.candidate}/>
+            console.log(json)
+            this.setState({
+                candidate: json,
+                hasCandidates: true
             })
-        })
+            })
     }
 
+    renderBallot = () => {
+        console.log(this.state.candidate)
+        return this.state.candidate.map(can => <Ballot can={can}/>)
+    } 
     render(){
-        // console.log(this.props)
+        // console.log(this.p)
         return(
             <div>
-            {/* {this.shit()} */}
+
+            {this.state.hasCandidates == true ? this.renderBallot() : null}
             </div>
         )
     }
