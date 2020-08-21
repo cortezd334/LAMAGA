@@ -124,7 +124,7 @@ class App extends React.Component {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({vote: {name: card.name, party: card.party, candidateUrl: card.candidateUrl}})
+      body: JSON.stringify({vote: {name: card.name, party: card.party, candidateUrl: card.candidateUrl, user_id: localStorage.getItem('userID')}})
     })
     .then(res => res.json())
     .then(console.log)
