@@ -9,7 +9,7 @@ class Vote extends React.Component {
         candidate: []
     }
     
-    componentDidMount() {
+    shit = () => {
         fetch('http://localhost:3000/votes')
         .then(res => res.json())
         .then(json => {
@@ -18,6 +18,7 @@ class Vote extends React.Component {
                 this.setState({
                     candidate: can
                 })
+                // <Ballot can={this.state.candidate}/>
             })
         })
     }
@@ -26,7 +27,7 @@ class Vote extends React.Component {
         // console.log(this.props)
         return(
             <div>
-                <Ballot can={this.state.candidate}/>
+            {/* {this.shit()} */}
             </div>
         )
     }
