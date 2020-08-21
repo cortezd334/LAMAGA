@@ -33,12 +33,17 @@ class User extends React.Component {
         }
         
         handleChange = (e) => {
-            // e.preventDefault()
-            console.log(e)
             console.log(e.target.name.value)
             
             let {name, username, address, age, party} = e.target
-            let data = { name: name.value, username: username.value, address: address.value, age: age.value , party: party.value  } 
+            
+            let n = name.value.length > 0 ? name.value : this.state.activeUser.name
+            let u = username.value.length > 0 ? username.value : this.state.activeUser.username
+            let a = age.value.length > 0 ? age.value : this.state.activeUser.age
+            let add = address.value.length > 0 ? address.value : this.state.activeUser.address
+            let p = party.value.length > 0 ? party.value : this.state.activeUser.party
+            
+            let data = { name: n, username: u, address: add, age: a, party: p  } 
                     
             const activeUser = localStorage.getItem("userID");
             fetch(`http://localhost:3000/users/${activeUser}`, {

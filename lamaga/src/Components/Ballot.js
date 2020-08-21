@@ -16,8 +16,7 @@ console.log(this.props.can)
         //     </Card>
         // }
         return (
-                <Card border="secondary" style={{ width: '24rem' }}>
-
+                <Card id='cans' border="secondary" style={{ width: '24rem' }}>
                       <Card.Body>
                          <Card.Title><b>{this.props.can.name}</b></Card.Title>
                          <Card.Subtitle>Party: {this.props.can.party}</Card.Subtitle>
