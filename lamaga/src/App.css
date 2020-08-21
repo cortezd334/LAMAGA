@@ -1,37 +1,38 @@
-html {
-  background-image: url("https://images01.military.com/sites/default/files/styles/full/public/media/global/newscred/2017/04/us-flag-21-apr-2017.jpeg.jpg?itok=TGwBeaGn");
-  background-size: cover;
-  background-position: bottom;
-  height: 100%;
-  display: grid;
-  grid-template-areas: 
-  "header header header header"
-  ". rep . sen ."
-  "footer footer footer footer";
-}
 
 h2 {
   color: white;
   font-family: 'Abril Fatface', cursive;
+  margin: 35px;
 }
 
 .App-header {
-  /* background-color: #282c34; */
-  background-color: rgb(2, 22, 88, 100);
-  height: 150vh;
-  min-height: 100vh;
+  background-color: rgb(2, 22, 88);
   display: block;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  grid-area: header
+}
+
+.appheader {
+  background-color: rgb(2, 22, 88);
+  grid-column-start: 1;
+  grid-column-end: span col4-start;
 }
 
 .App {
   text-align: center;
   background-color: rgb(2, 22, 88);
-  /* background-image: url(./src/background-img.jpg); */
+  background-image: url("https://images01.military.com/sites/default/files/styles/full/public/media/global/newscred/2017/04/us-flag-21-apr-2017.jpeg.jpg?itok=TGwBeaGn");
+  background-size: cover;
+  background-position: bottom;
+  height: 240vh;
+  display: grid;
+  grid-template-rows: 300px auto;
+  /* grid-template-columns: 1fr 1fr; */
+
 }
 
 .App-logo {
@@ -45,7 +46,10 @@ h2 {
   }
 }
 
-
+form {
+  padding: 25px ;
+  /* grid-area: .; */
+}
 
 label {
   color: black;
@@ -82,25 +86,25 @@ card {
   display: inline-block;
 }
 
-.container {
-
-}
-.sen {
-
-  background-color: rgba(255, 255, 255, .7);
-  grid-area: sen;
-}
-
-.rep {
+#sen {
   display: inline-block;
   background-color: rgba(255, 255, 255, .7);
-  grid-area: rep;
+}
+
+#rep {
+  display: inline-block;
+  background-color: rgba(255, 255, 255, .7);
+}
+
+#cans {
+  display: inline-block;
+  background-color: rgba(255, 255, 255, .7);
+  margin: 10px;
 }
 
 #profile {
   background-color: rgba(255, 255, 255, .7);
   display: inline-block;
-  /* align-content: center; */
   margin-left: 38%;
 }
 
