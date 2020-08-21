@@ -5,8 +5,8 @@ const Home = (props) => {
     return (
         <div>
             <form onSubmit={(e) => props.sub(e)}>
-                <label>
-                    Address:
+                <label id={'add'}>
+                    Address:    <t></t>
                     <input
                     type="text"
                     name="address"

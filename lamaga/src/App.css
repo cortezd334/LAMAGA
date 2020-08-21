@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  background-color: rgb(2, 22, 88);
   /* background-image: url(./src/background-img.jpg); */
 }
 
@@ -14,8 +15,19 @@
   }
 }
 
+h2 {
+  color: white;
+  font-family: 'Abril Fatface', cursive;
+}
+
+body {
+  background-image: url("https://images01.military.com/sites/default/files/styles/full/public/media/global/newscred/2017/04/us-flag-21-apr-2017.jpeg.jpg?itok=TGwBeaGn");
+  background-size: cover;
+  background-position: bottom;
+}
 .App-header {
-  background-color: #282c34;
+  /* background-color: #282c34; */
+  background-color: navy;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -25,8 +37,19 @@
   color: white;
 }
 
+label {
+  color: white;
+  font-weight: bold;
+}
+
 .App-link {
   color: #61dafb;
+  /* color: white; */
+}
+
+a {
+  color: white;
+  font-weight: bold;
 }
 
 .active{
@@ -36,6 +59,8 @@
 ul {
   list-style-type: none;
 }
+
+
 
 @keyframes App-logo-spin {
   from {
