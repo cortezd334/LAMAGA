@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import Vote from './Components/Vote.js'
 import User from './Components/User.js'
-import State from './Components/State.js'
+import Ballot from './Components/Ballot.js'
 import Signup from './Components/Signup.js'
 import Login from './Components/Login.js'
 import Register from './Components/Register.js'
@@ -125,7 +125,7 @@ class App extends React.Component {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({vote: {name: card.name, party: card.party, candidateUrl: card.candidateUrl}})
+      body: JSON.stringify({vote: {name: card.name, party: card.party, candidateUrl: card.candidateUrl, user_id: localStorage.getItem('userID')}})
     })
     .then(res => res.json())
     .then(console.log)
@@ -181,6 +181,8 @@ class App extends React.Component {
   renderLogin = () => <Login login={this.handleLogin}/>
   renderRegister = () => <Register register={this.handleRegister}/>
 
+  renderBallot = () => <Ballot />
+
   renderCandidates = () => {
     return (
       <div>
@@ -215,7 +217,7 @@ class App extends React.Component {
               <NavLink to='/profile'>My Profile</NavLink>
             </li>
             <li>
-              <NavLink to='/locations'>Polling Location</NavLink>
+              <NavLink to='/ballot'>My Candidates</NavLink>
             </li>
             <li>
               <NavLink onClick={this.logout}to='/login'>Log Out</NavLink>
@@ -230,7 +232,7 @@ class App extends React.Component {
         <Route path='/register' render={this.renderRegister}/>
         <Route path='/profile' component={User}/>
         <Route path='/candidates' render={this.renderCandidates}/>
-        <Route path='/locations' render={this.renderPollingLocations}/>
+        <Route path='/ballot' render={this.renderBallot}/>
         <Route component={NotFound}/>
         </Switch>
       </div> 

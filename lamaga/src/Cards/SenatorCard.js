@@ -14,16 +14,7 @@ class SenatorCard extends React.Component {
         </Card.Body>
       </Card>
 
-      // <div>
-      //   <div className="card-body">
-      //     <h5 className="card-title"> {this.props.name}</h5>
-      //     <p className="card-text">
-      //       {" "}
-      //       Party: {this.props.party} <br />
-      //       <a href={this.props.candidateUrl}>Website</a>
-      //     </p>
-      //   </div>
-      // </div>
+
     );
   }
 }
