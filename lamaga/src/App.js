@@ -33,8 +33,8 @@ class App extends React.Component {
   };
 
   fetchReps = (url) => {
-    let api= "AIzaSyDmZGjlJOFg3tzG7QPoDDcYaGdesndYC3s";
-    fetch(`https://content-civicinfo.googleapis.com/civicinfo/v2/voterinfo?address=%27${url}%27&electionId=2000&key=${api}`)
+    "AIzaSyDmZGjlJOFg3tzG7QPoDDcYaGdesndYC3s";
+    fetch(`https://content-civicinfo.googleapis.com/civicinfo/v2/voterinfo?address=%27${url}%27&electionId=2000&key=${process.env.REACT_APP_KEY}`)
     .then((res) => res.json())
     .then((json) => {
       json.contests.map((con) => {
@@ -42,7 +42,7 @@ class App extends React.Component {
           con.office &&
           con.office.includes("Representative") &&
           con.level &&
-          con.level[0] === "country"
+          con.level[0] == "country"
         ) {
           this.setState({
             representatives: {
@@ -58,11 +58,10 @@ class App extends React.Component {
   //need to clear out senators before setting again
 
   fetchSen = (url) => {
-    let api= "AIzaSyDmZGjlJOFg3tzG7QPoDDcYaGdesndYC3s";
-    fetch(`https://content-civicinfo.googleapis.com/civicinfo/v2/voterinfo?address=%27${url}%27&electionId=2000&key=${api}`)
+    fetch(`https://content-civicinfo.googleapis.com/civicinfo/v2/voterinfo?address=%27${url}%27&electionId=2000&key=${process.env.REACT_APP_KEY}`)
     .then(res => res.json())
     .then(sen => sen.contests.map(con => {
-        if (con.office && con.office.endsWith("Senator") && con.level && con.level[0] === "country") {
+        if (con.office && con.office.endsWith("Senator") && con.level && con.level[0] == "country") {
           // this.setState({
           //   senators: {
           //     candidates: '',
@@ -181,7 +180,7 @@ class App extends React.Component {
   renderLogin = () => <Login login={this.handleLogin}/>
   renderRegister = () => <Register register={this.handleRegister}/>
 
-  renderBallot = () => <Ballot />
+  renderBallot = (json) => <Ballot ballot={this.ballot}/>
 
   renderCandidates = () => {
     return (
@@ -197,8 +196,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <header >
-        
+        <header>
           <h2>Let's ACTUALLY Make America Great Again!</h2>
           <ul>
             <li>
@@ -222,19 +220,23 @@ class App extends React.Component {
             <li>
               <NavLink onClick={this.logout}to='/login'>Log Out</NavLink>
             </li>
+            <li>
+              <NavLink to='/vote'>Log Out</NavLink>
+            </li>
           </ul>
         </header>
 
-        <Switch>
-        <Route exact path='/' render={this.renderHome}/>
-        <Route path='/signup' render={this.renderSignup}/>
-        <Route path='/login' render={this.renderLogin}/>
-        <Route path='/register' render={this.renderRegister}/>
-        <Route path='/profile' component={User}/>
-        <Route path='/candidates' render={this.renderCandidates}/>
-        <Route path='/ballot' render={this.renderBallot}/>
-        <Route component={NotFound}/>
-        </Switch>
+          <Switch>
+          <Route exact path='/' render={this.renderHome}/>
+          <Route path='/signup' render={this.renderSignup}/>
+          <Route path='/login' render={this.renderLogin}/>
+          <Route path='/register' render={this.renderRegister}/>
+          <Route path='/profile' component={User}/>
+          <Route path='/candidates' render={this.renderCandidates}/>
+          <Route path='/ballot' render={this.renderBallot}/>
+          <Route path='/vote' component={Vote}/>
+          <Route component={NotFound}/>
+          </Switch>
       </div> 
     );
   }

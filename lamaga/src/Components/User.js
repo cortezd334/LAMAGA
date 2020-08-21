@@ -71,7 +71,11 @@ class User extends React.Component {
                 }
         })
         .then(res => res.json())
-        .then(json => alert(json.error))
+        .then(json => {
+            alert(json.error)
+            {this.props.history.push('/login')}
+            localStorage.clear()
+        })
 
     }
 
@@ -82,7 +86,8 @@ class User extends React.Component {
         console.log(this.state)
         
         return (
-            <Card border="secondary" >
+            <body>
+            <Card id='profile' border="secondary" >
                 <form onSubmit={(e) => {this.handleChange(e)}}>
                 <Card.Header>Profile</Card.Header>
                 <Card.Body>
@@ -112,6 +117,7 @@ class User extends React.Component {
                 </form>
                 <button onClick={this.delete}>Delete Profile</button>
             </Card>
+            </body>
             // <div>
             // </div>
             
